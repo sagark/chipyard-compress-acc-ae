@@ -21,7 +21,7 @@
 	url = https://github.com/ucb-bar/hwacha.git
 [submodule "sims/firesim"]
 	path = sims/firesim
-	url = https://github.com/firesim/firesim.git
+	url = https://github.com/sagark/firesim-compress-acc-ae.git
 [submodule "generators/icenet"]
 	path = generators/icenet
 	url = https://github.com/firesim/icenet.git
@@ -133,3 +133,6 @@
 [submodule "generators/mempress"]
 	path = generators/mempress
 	url = https://github.com/ucb-bar/mempress.git
+[submodule "generators/compress-acc"]
+	path = generators/compress-acc
+	url = https://github.com/ucb-bar/compress-acc.git

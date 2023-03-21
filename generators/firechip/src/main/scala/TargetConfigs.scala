@@ -55,6 +55,7 @@ class WithScalaTestFeatures extends Config((site, here, up) => {
 class DDR3FCFS extends FCFS16GBQuadRank
 class DDR3FRFCFS extends FRFCFS16GBQuadRank
 class DDR3FRFCFSLLC4MB extends FRFCFS16GBQuadRankLLC4MB
+class DDR3FRFCFSLLCMaxSetb17MaxWayb1 extends FRFCFS16GBQuadRankLLCMaxSetb17MaxWayb1
 
 class WithNIC extends icenet.WithIceNIC(inBufFlits = 8192, ctrlQueueDepth = 64)
 
@@ -106,6 +107,20 @@ class WithFireSimHighPerfClocking extends Config(
   new testchipip.WithAsynchronousSerialSlaveCrossing
 )
 
+class WithFireSimCompressAccClocking extends Config(
+  // Optional: This sets the default frequency for all buses in the system to 2.0 GHz
+  // (since unspecified bus frequencies will use the pbus frequency)
+  new chipyard.config.WithPeripheryBusFrequency(2000.0) ++
+  // Optional: These three configs put the DRAM memory system in it's own clock domain.
+  // Removing the first config will result in the FASED timing model running
+  // at the pbus freq (above, 2.0 GHz), which is outside the range of valid DDR3 speedgrades.
+  // 1 GHz matches the FASED default, using some other frequency will require
+  // runnings the FASED runtime configuration generator to generate faithful DDR3 timing values.
+  new chipyard.config.WithMemoryBusFrequency(1000.0) ++
+  new chipyard.config.WithAsynchrousMemoryBusCrossing ++
+  new testchipip.WithAsynchronousSerialSlaveCrossing
+)
+
 // Tweaks that are generally applied to all firesim configs setting a single clock domain at 1000 MHz
 class WithFireSimConfigTweaks extends Config(
   // 1 GHz matches the FASED default (DRAM modeli realistically configured for that frequency)
@@ -128,6 +143,11 @@ class WithFireSimTestChipConfigTweaks extends Config(
 // Tweaks for legacy FireSim configs.
 class WithFireSimHighPerfConfigTweaks extends Config(
   new WithFireSimHighPerfClocking ++
+  new WithFireSimDesignTweaks
+)
+
+class WithFireSimCompressAccConfigTweaks extends Config(
+  new WithFireSimCompressAccClocking ++
   new WithFireSimDesignTweaks
 )
 

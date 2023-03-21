@@ -24,6 +24,7 @@ import testchipip._
 import chipyard.{HasHarnessSignalReferences, HarnessClockInstantiatorKey}
 import chipyard.clocking.{HasChipyardPRCI}
 import chipyard.iobinders.{GetSystemParameters, JTAGChipIO, ClockWithFreq}
+import chipyard.CanHaveMasterAXI4MemPortMaxFlight1
 
 import tracegen.{TraceGenSystemModuleImp}
 import icenet.{CanHavePeripheryIceNIC, SimNetwork, NicLoopback, NICKey, NICIOvonly}
@@ -128,7 +129,7 @@ class WithSimNetwork extends OverrideHarnessBinder({
 })
 
 class WithSimAXIMem extends OverrideHarnessBinder({
-  (system: CanHaveMasterAXI4MemPort, th: HasHarnessSignalReferences, ports: Seq[ClockedAndResetIO[AXI4Bundle]]) => {
+  (system: CanHaveMasterAXI4MemPortMaxFlight1, th: HasHarnessSignalReferences, ports: Seq[ClockedAndResetIO[AXI4Bundle]]) => {
     val p: Parameters = chipyard.iobinders.GetSystemParameters(system)
     (ports zip system.memAXI4Node.edges.in).map { case (port, edge) =>
       val mem = LazyModule(new SimAXIMem(edge, size=p(ExtMem).get.master.size)(p))
@@ -181,7 +182,7 @@ class WithSimAXIMemOverSerialTL extends OverrideHarnessBinder({
 })
 
 class WithBlackBoxSimMem(additionalLatency: Int = 0) extends OverrideHarnessBinder({
-  (system: CanHaveMasterAXI4MemPort, th: HasHarnessSignalReferences, ports: Seq[ClockedAndResetIO[AXI4Bundle]]) => {
+  (system: CanHaveMasterAXI4MemPortMaxFlight1, th: HasHarnessSignalReferences, ports: Seq[ClockedAndResetIO[AXI4Bundle]]) => {
     val p: Parameters = chipyard.iobinders.GetSystemParameters(system)
     (ports zip system.memAXI4Node.edges.in).map { case (port, edge) =>
       val memSize = p(ExtMem).get.master.size

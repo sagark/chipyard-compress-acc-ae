@@ -1,0 +1,13 @@
+diff --git a/generators/firechip/src/main/scala/TargetConfigs.scala b/generators/firechip/src/main/scala/TargetConfigs.scala
+index 7e9a4a0..95b1661 100644
+--- a/generators/firechip/src/main/scala/TargetConfigs.scala
++++ b/generators/firechip/src/main/scala/TargetConfigs.scala
+@@ -79,7 +79,7 @@ class WithFireSimDesignTweaks extends Config(
+   // Required*: Removes thousands of assertions that would be synthesized (* pending PriorityMux bugfix)
+   new WithoutTLMonitors ++
+   // Optional: Adds IO to attach tracerV bridges
+-  new chipyard.config.WithTraceIO ++
++//  new chipyard.config.WithTraceIO ++
+   // Optional: Request 16 GiB of target-DRAM by default (can safely request up to 32 GiB on F1)
+   new freechips.rocketchip.subsystem.WithExtMemSize((1 << 30) * 16L) ++
+   // Optional: Removing this will require using an initramfs under linux
